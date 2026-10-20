@@ -12,8 +12,9 @@ public class Main {
         LogParser parser = new LogParser();
         List<String> linhas = Files.readAllLines(Path.of("data/access.log"));
 
-        List<LogEntry> entries = new ArrayList<>();
+        List<LogEntry> entries = new ArrayList<>(); //guarda os ips válidos
         Map<String, Integer> errosPorIp = new HashMap<>(); //guarda o ip e a quantidade de erros
+        Map<String, Integer> acessosPorRota = new HashMap<>(); //guarda o endpoint e acessos por rota
 
         System.out.println("\n------LEITURA DOS LOGS------");
         for(String linha : linhas) {
@@ -31,6 +32,8 @@ public class Main {
             }
         }
 
+        /*FAZER UM RESUMO DOS LOGS COM: quantidade de logs lido, qntd de logs validos, qntd de logs coml erros*/
+
         System.out.println("\n-----QUANTIDADE DE LOGS VALIDOS-----");
         System.out.println(entries.size());
 
@@ -47,7 +50,29 @@ public class Main {
         List<Map.Entry<String, Integer>> lista = new ArrayList<>(errosPorIp.entrySet()); //transforma o hashmap em lista
         lista.sort((a, b) -> b.getValue() - a.getValue()); //ordena por quantidade de erros
 
-        System.out.println("\n------ERROS POR IP------");
-        System.out.println(lista);
+        int limite = Math.min(3, lista.size());
+        System.out.println("\n-----TOP 3 IP's COM MAIS ERROS-----");
+        for(int i = 0; i < limite; i++) {
+            Map.Entry<String, Integer> par = lista.get(i);
+            System.out.println((i + 1) + ". " + par.getKey() + " - " + par.getValue() + " erros.");
+        }
+
+        for(LogEntry e : entries) {
+            if(e.getStatusCode() == 200) {
+                if(acessosPorRota.containsKey(e.getEndpoint())) {
+                    acessosPorRota.put(e.getEndpoint(), acessosPorRota.get(e.getEndpoint())+ 1);
+                } else {
+                    acessosPorRota.put(e.getEndpoint(), 1);
+                }
+            }
+        }
+
+        List<Map.Entry<String, Integer>> listaRota = new ArrayList<>(acessosPorRota.entrySet()); //hash em lista
+        listaRota.sort((c, d) -> d.getValue() - c.getValue()); //ordenação da lista
+
+        System.out.println("\n-----ROTA MAIS ACESSADA-----");
+        Map.Entry<String, Integer> par2 = listaRota.get(0);
+        System.out.println(par2.getKey() + " - " + par2.getValue() + " acessos.");
+
     }
 }

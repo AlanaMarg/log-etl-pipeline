@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 public class LogParser {
     public LogEntry parse(String linha) {
         Pattern padrao = Pattern.compile("^(\\S+) \\S+ \\S+ \\[([^\\]]+)\\] \"(\\S+) (\\S+)[^\"]*\" (\\d{3})"); //cria o molde da regex
-        Matcher matcher = padrao.matcher(linha); //aplica o molde da linha
+        Matcher matcher = padrao.matcher(linha);
 
-        if(matcher.find()) { //retorna true ou false após procurar
-            String ip = matcher.group(1); //devolve o conteudo do primeiro parentese
+        if(matcher.find()) {
+            String ip = matcher.group(1);
             String time = matcher.group(2);
             String method = matcher.group(3);
             String endpoint = matcher.group(4);

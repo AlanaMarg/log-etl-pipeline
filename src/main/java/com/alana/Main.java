@@ -16,23 +16,22 @@ public class Main {
         Map<String, Integer> errosPorIp = new HashMap<>(); //guarda o ip e a quantidade de erros
         Map<String, Integer> acessosPorRota = new HashMap<>(); //guarda o endpoint e acessos por rota
 
-        System.out.println("\n------LEITURA DOS LOGS------");
-        for(String linha : linhas) {
-            //parser.parse(linha);
 
+
+        for(String linha : linhas) {
             LogEntry entry = parser.parse(linha);
 
-            if(entry == null) {
-                System.out.println("Linha inválida ignorada: " + linha);
-            } else {
-                System.out.println(entry.getIp() + " " + entry.getTimestamp() + " " + entry.getMethod() +
-                        " " + entry.getEndpoint() + " " + entry.getStatusCode());
-
+            if(entry != null) {
                 entries.add(entry); //guarda os logs válidos
             }
         }
 
-        /*FAZER UM RESUMO DOS LOGS COM: quantidade de logs lido, qntd de logs validos, qntd de logs coml erros*/
+        System.out.println("------RESUMO------");
+        System.out.println("Quantidade de logs lidos: " + linhas.size());
+        System.out.println("Quantidade de logs validos: " + entries.size());
+        System.out.println("Quantidade de logs invalidos: " + (linhas.size() - entries.size()));
+
+        /*FAZER UM RESUMO DOS LOGS COM: quantidade de logs lido, qntd de logs validos, qntd de logs com erros*/
 
         System.out.println("\n-----QUANTIDADE DE LOGS VALIDOS-----");
         System.out.println(entries.size());

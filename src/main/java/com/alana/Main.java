@@ -17,7 +17,6 @@ public class Main {
         Map<String, Integer> acessosPorRota = new HashMap<>(); //guarda o endpoint e acessos por rota
 
 
-
         for(String linha : linhas) {
             LogEntry entry = parser.parse(linha);
 
@@ -31,7 +30,6 @@ public class Main {
         System.out.println("Quantidade de logs validos: " + entries.size());
         System.out.println("Quantidade de logs invalidos: " + (linhas.size() - entries.size()));
 
-        /*FAZER UM RESUMO DOS LOGS COM: quantidade de logs lido, qntd de logs validos, qntd de logs com erros*/
 
         System.out.println("\n-----QUANTIDADE DE LOGS VALIDOS-----");
         System.out.println(entries.size());

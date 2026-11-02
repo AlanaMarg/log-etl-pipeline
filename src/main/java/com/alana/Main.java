@@ -2,6 +2,7 @@ package com.alana;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,11 @@ import java.util.Map;
 public class Main {
     static void main(String[] args) throws Exception {
         LogParser parser = new LogParser();
+
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("Connecting to database...\n");
+        }
+
         List<String> linhas = Files.readAllLines(Path.of("data/access.log"));
 
         List<LogEntry> entries = new ArrayList<>(); //guarda os ips válidos
@@ -30,9 +36,6 @@ public class Main {
         System.out.println("Quantidade de logs validos: " + entries.size());
         System.out.println("Quantidade de logs invalidos: " + (linhas.size() - entries.size()));
 
-
-        System.out.println("\n-----QUANTIDADE DE LOGS VALIDOS-----");
-        System.out.println(entries.size());
 
         for(LogEntry e : entries) {
             if(e.getStatusCode() >= 400) {
@@ -70,6 +73,17 @@ public class Main {
         System.out.println("\n-----ROTA MAIS ACESSADA-----");
         Map.Entry<String, Integer> par2 = listaRota.get(0);
         System.out.println(par2.getKey() + " - " + par2.getValue() + " acessos.");
+
+
+        System.out.println("\n-----GRAVACAO NO BANCO-----");
+        LogRepository repo = new LogRepository();
+
+        try (Connection conn = Conexao.conectar()){
+            for(LogEntry e : entries) {
+                repo.inserir(conn, e);
+            }
+            System.out.println("Gravados no banco: " + entries.size());
+        }
 
     }
 }

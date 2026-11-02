@@ -66,8 +66,10 @@ public class Main {
         listaRota.sort((c, d) -> d.getValue() - c.getValue()); //ordenação da lista
 
         System.out.println("\n-----ROTA MAIS ACESSADA-----");
-        Map.Entry<String, Integer> par2 = listaRota.get(0);
-        System.out.println(par2.getKey() + " - " + par2.getValue() + " acessos.");
+        if (!listaRota.isEmpty()) {
+            Map.Entry<String, Integer> par2 = listaRota.get(0);
+            System.out.println(par2.getKey() + " - " + par2.getValue() + " acessos.");
+        }
 
 
         System.out.println("\n-----GRAVACAO NO BANCO-----");

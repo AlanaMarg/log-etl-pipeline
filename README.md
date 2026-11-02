@@ -58,8 +58,6 @@ log-analyzer
 ## Exemplo de saída
 
 ```
-Connecting to database...
-
 ------RESUMO------
 Quantidade de logs lidos: 32
 Quantidade de logs validos: 30
@@ -79,38 +77,37 @@ Gravados no banco: 30
 
 ## O que aprendi
 
-## O que aprendi
-
 Antes deste projeto eu só conhecia Java básico e banco de dados. Regex, JDBC e o
 uso de Map eram novidade para mim, e aprendi fazendo, um passo de cada vez.
 
-**Regex.** É uma forma de descrever o formato de um texto para extrair partes
+**Regex:** É uma forma de descrever o formato de um texto para extrair partes
 dele. No projeto, usei para dividir cada linha do log em partes menores (IP,
 data, método, rota e status) para poder analisá-las. A maior dificuldade foi a
 sintaxe, que é muito específica e diferencia maiúsculas de minúsculas: por
 exemplo, `\s` (espaço) e `\S` (qualquer coisa que não é espaço) têm
 significados opostos, e um erro de uma letra fez o parser não encontrar nada.
 
-**HashMap e lista.** Usei um HashMap para guardar cada IP e sua quantidade de
+**HashMap e lista:** Usei um HashMap para guardar cada IP e sua quantidade de
 erros. Como ele não tem ordem nem posição, foi preciso copiar os pares para uma
 lista, que permite ordenar e pegar o Top 3. Também errei a contagem algumas
 vezes: coloquei o `+ 1` dentro do `get` (`get(e.getIp() + 1)`), então o Java
 buscava uma chave que não existia.
 
-**Conexão com o banco (JDBC).** Adicionei o driver do PostgreSQL ao projeto
+**Conexão com o banco (JDBC):** Adicionei o driver do PostgreSQL ao projeto
 para que o código Java consiga se comunicar com o banco. Gravei os dados com
 `PreparedStatement`, usando `?` no lugar dos valores. Isso é uma medida de
 segurança: como o log vem de fora, ele pode conter texto malicioso, e o
 `PreparedStatement` trata o que entra pelo `?` como dado, e não como comando
 SQL.
 
-**Segurança.** Aprendi que a senha do banco não pode ir para o GitHub. Guardei
+**Segurança:** Aprendi que a senha do banco não pode ir para o GitHub. Guardei
 os dados de acesso no `config.properties` e usei o `.gitignore` para que esse
 arquivo não seja enviado no push. Também aprendi a conferir a lista de arquivos
 antes de cada commit.
 
 ## Próximos passos
 
+- Dividir a lógica do `Main` em métodos menores (leitura, métricas, gravação), para deixá-lo mais legível
 - Converter o timestamp para `LocalDateTime`
 - Guardar o tamanho da resposta (bytes)
 - Evitar dados duplicados ao rodar o programa mais de uma vez

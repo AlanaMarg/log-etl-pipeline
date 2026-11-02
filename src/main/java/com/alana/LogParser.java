@@ -17,6 +17,7 @@ public class LogParser {
 
             return new LogEntry(ip, time, method, endpoint, statusCode);
         }
+
         return null;
     }
 }

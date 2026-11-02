@@ -9,13 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         LogParser parser = new LogParser();
-
-        try (Connection conn = Conexao.conectar()) {
-            System.out.println("Connecting to database...\n");
-        }
-
         List<String> linhas = Files.readAllLines(Path.of("data/access.log"));
 
         List<LogEntry> entries = new ArrayList<>(); //guarda os ips válidos
@@ -51,7 +46,7 @@ public class Main {
         lista.sort((a, b) -> b.getValue() - a.getValue()); //ordena por quantidade de erros
 
         int limite = Math.min(3, lista.size());
-        System.out.println("\n-----TOP 3 IP's COM MAIS ERROS-----");
+        System.out.println("\n-----TOP 3 IPs COM MAIS ERROS-----");
         for(int i = 0; i < limite; i++) {
             Map.Entry<String, Integer> par = lista.get(i);
             System.out.println((i + 1) + ". " + par.getKey() + " - " + par.getValue() + " erros.");

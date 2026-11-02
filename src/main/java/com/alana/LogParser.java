@@ -15,8 +15,6 @@ public class LogParser {
             String endpoint = matcher.group(4);
             int statusCode = Integer.parseInt(matcher.group(5));
 
-            //System.out.println(ip +" "+ time + " "+ method + " "+ endpoint + " "+ statusCode);
-
             return new LogEntry(ip, time, method, endpoint, statusCode);
         }
         return null;
